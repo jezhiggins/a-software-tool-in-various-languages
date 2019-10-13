@@ -1,0 +1,4 @@
+:revealjs_center: false
+:revealjs_progress: false
+
+:imagesdir: images

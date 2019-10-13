@@ -1,0 +1,45 @@
+buildscript {
+    dependencies {
+        classpath 'org.asciidoctor:asciidoctorj-diagram:1.3.1'
+    }
+}
+
+plugins {
+  id 'org.asciidoctor.convert' version '1.5.7'
+}
+
+
+ext {
+    revealjsTemplateDir = new File('src/reveal.js/revealjs-backends/reveal.js/templates/slim')
+}
+
+asciidoctor {
+    requires 'asciidoctor-diagram'
+
+    sources {
+        include "index.adoc"
+    }
+
+    resources {
+        from('src/docs/asciidoc') {
+            include 'images/**'
+            include 'stylesheets/**'
+            exclude 'images/diag-*.png.cache'
+        }
+        from('src/reveal.js') {
+            include 'reveal.js/**'
+        }
+    }
+
+    backends 'revealjs'
+
+    options template_dirs : [ revealjsTemplateDir.absolutePath ],
+      partition : true
+
+    attributes 'source-highlighter': 'coderay',
+      'asciidoctorj' : asciidoctorj.version,
+      'imagesoutdir' : file("${outputDir}/revealjs/images").absolutePath,
+      'imagesdir'    : 'images'
+}
+
+defaultTasks 'asciidoctor'
