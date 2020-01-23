@@ -10,7 +10,7 @@ plugins {
 
 
 ext {
-    revealjsTemplateDir = new File('src/reveal.js/revealjs-backends/reveal.js/templates/slim')
+    revealjsTemplateDir = new File('src/docs/reveal.js/revealjs-backends/reveal.js/templates/slim')
 }
 
 asciidoctor {
@@ -26,7 +26,7 @@ asciidoctor {
             include 'stylesheets/**'
             exclude 'images/diag-*.png.cache'
         }
-        from('src/reveal.js') {
+        from('src/docs/reveal.js') {
             include 'reveal.js/**'
         }
     }
