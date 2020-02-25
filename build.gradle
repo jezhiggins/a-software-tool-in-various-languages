@@ -24,6 +24,31 @@ asciidoctorRevealJs {
   sources {
     include "index.adoc"
   }
+
+  resources {
+    from("${sourceDir}/images") {
+      include '**'
+      into 'images'
+    }
+  }
+
+/*
+ attributes 'build-gradle': file('build.gradle'),
+            'endpoint-url': 'http://example.org',
+            'source-highlighter': 'coderay',
+            'coderay-css': 'style',
+            'imagesdir': './images',
+            'toc': 'left',
+            'icons': 'font',
+            'setanchors': '',
+            'idprefix': 'slide-',
+            'idseparator': '-',
+            'docinfo': 'shared',
+            'revealjs_theme': 'black',
+            'revealjs_transition': 'linear',
+            'revealjs_history': 'true',
+            'revealjs_slideNumber': 'true'
+*/
 }
 
 defaultTasks 'asciidoctorRevealJs'
