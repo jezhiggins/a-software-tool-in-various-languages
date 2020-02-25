@@ -1,4 +1,5 @@
-:revealjs_center: false
-:revealjs_progress: false
+= A Software Tool in Various Languages
+Jez Higgins, jez@jezuk.co.uk
+2020-02-25
 
-:imagesdir: images
+

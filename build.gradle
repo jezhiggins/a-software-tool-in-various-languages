@@ -1,45 +1,29 @@
-buildscript {
-    dependencies {
-        classpath 'org.asciidoctor:asciidoctorj-diagram:1.3.1'
-    }
-}
-
 plugins {
-  id 'org.asciidoctor.convert' version '1.5.7'
+  id 'org.asciidoctor.jvm.gems' version '3.1.0'
+  id 'org.asciidoctor.jvm.revealjs' version '3.1.0'
 }
 
-
-ext {
-    revealjsTemplateDir = new File('src/docs/reveal.js/revealjs-backends/reveal.js/templates/slim')
+repositories {
+  jcenter()
+  ruby {
+    gems()
+  }
 }
 
-asciidoctor {
-    requires 'asciidoctor-diagram'
+revealjs {
+  version = '3.1.0'
 
-    sources {
-        include "index.adoc"
-    }
-
-    resources {
-        from('src/docs/asciidoc') {
-            include 'images/**'
-            include 'stylesheets/**'
-            exclude 'images/diag-*.png.cache'
-        }
-        from('src/docs/reveal.js') {
-            include 'reveal.js/**'
-        }
-    }
-
-    backends 'revealjs'
-
-    options template_dirs : [ revealjsTemplateDir.absolutePath ],
-      partition : true
-
-    attributes 'source-highlighter': 'coderay',
-      'asciidoctorj' : asciidoctorj.version,
-      'imagesoutdir' : file("${outputDir}/revealjs/images").absolutePath,
-      'imagesdir'    : 'images'
+  templateGitHub {  
+    organisation = 'hakimel'
+    repository = 'reveal.js'
+    tag = '3.9.1'
+  }
 }
 
-defaultTasks 'asciidoctor'
+asciidoctorRevealJs {
+  sources {
+    include "index.adoc"
+  }
+}
+
+defaultTasks 'asciidoctorRevealJs'
