@@ -1,5 +1,27 @@
 = A Software Tool in Various Languages
 Jez Higgins, jez@jezuk.co.uk
-2020-02-25
+{docdate}
+:revealjs_theme: black
+:revealjs_progress: false
+
+[background-image='images/brumjs.png']
+[background-size='400px 600px']
+== !
+
+*A Software Tool in Various Languages*
+
+Jez Higgins
 
 
+++++
+<div id="talk-header" style="width: 100%">
+  <span style="float: right"><small>Brum.js March 2020, @jezhiggins</small></span>
+</div>
+<script type="text/javascript">
+    window.addEventListener("load", function() {
+        revealDiv = document.querySelector("body div.reveal")
+        header = document.getElementById("talk-header");
+        revealDiv.appendChild(header);
+    } );
+</script>
+++++
