@@ -21,13 +21,35 @@ Jez Higgins
 
 [quote]
 --
+This book teaches how to write good programs that make good tools, by presenting a comprehensive set, each of which provides lessons in design and implementation.
+--
+
+[background-image='images/software-tools-in-pascal-cover.jpg']
+== !
+
+[quote]
+--
+The principles of good programming are presented not as abstract sermons but as concrete lessons in the context of working programs. For example, there is no chapter on "efficiency". Instead, throughout the book there are observations on efficiency as it relates to the particular program being developed. Similarly there is no chapter on "top-down design," nor on "structured programming," nor on "testing and debugging." Instead, all of these disciplines are employed as appropriate in every program shown.
+--
+
+[background-image='images/software-tools-in-pascal-cover.jpg']
+== !
+
+[quote]
+--
 Good Programming is not learned from generalities, but by seeing how significant programs can be made clean, easy to maintain and modify, human-engineered, efficient, and reliable, by the application of common sense and good programming practices. Careful study and imitation of good programs leads to better writing.
 --
 
+[background-image='images/software-tools-software-tools-in-pascal.jpg']
+== !
+
+[background-iframe=https://www.jezuk.co.uk/tags/software-tools-in-c++.html]
+== !
+
 
 ++++
-<div id="talk-header" style="width: 100%">
-  <span style="float: right"><small>Brum.js March 2020, @jezhiggins</small></span>
+<div id="talk-header" class="slide-header">
+  <small class="slide-header-text">Brum.js March 2020, @jezhiggins</small>
 </div>
 <script type="text/javascript">
     window.addEventListener("load", function() {
