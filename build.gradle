@@ -13,7 +13,7 @@ repositories {
 revealjs {
   version = '3.1.0'
 
-  templateGitHub {  
+  templateGitHub {
     organisation = 'hakimel'
     repository = 'reveal.js'
     tag = '3.9.1'
@@ -29,6 +29,10 @@ asciidoctorRevealJs {
     from("${sourceDir}/images") {
       include '**'
       into 'images'
+    }
+    from("${sourceDir}/style") {
+      include '**'
+      into 'style'
     }
   }
 

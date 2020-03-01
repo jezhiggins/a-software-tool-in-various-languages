@@ -1,7 +1,8 @@
 = A Software Tool in Various Languages
 Jez Higgins, jez@jezuk.co.uk
 {docdate}
-:revealjs_theme: black
+:customcss: style/theme-tweak.css
+:revealjs_theme: white
 :revealjs_progress: false
 
 [background-image='images/brumjs.png']
@@ -11,6 +12,17 @@ Jez Higgins, jez@jezuk.co.uk
 *A Software Tool in Various Languages*
 
 Jez Higgins
+
+[background-image='images/software-tools-in-pascal-cover.jpg']
+== !
+
+[background-image='images/software-tools-in-pascal-cover.jpg']
+== !
+
+[quote]
+--
+Good Programming is not learned from generalities, but by seeing how significant programs can be made clean, easy to maintain and modify, human-engineered, efficient, and reliable, by the application of common sense and good programming practices. Careful study and imitation of good programs leads to better writing.
+--
 
 
 ++++
