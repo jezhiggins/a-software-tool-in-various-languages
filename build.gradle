@@ -25,6 +25,8 @@ asciidoctorRevealJs {
     include "index.adoc"
   }
 
+  baseDirFollowsSourceDir()
+
   resources {
     from("${sourceDir}/images") {
       include '**'
