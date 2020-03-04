@@ -1,0 +1,1 @@
+add_executable(brumjs_find main.cpp arguments.cpp matcher.cpp matcher.hpp)

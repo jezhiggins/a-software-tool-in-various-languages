@@ -43,7 +43,7 @@ This book teaches how to write good programs that make good tools, by presenting
 --
 This is the first line of the Preface.
 
-The computing landscape in 1981 was, you won't be surprised to know, rather different to today. The home computer revolution, was only just beginning. Even in the commercial and academic arena, computing was a very different beast.
+The computing landscape in 1981 was, you won't be surprised to know, rather different to today. The home computer revolution was only just beginning, and those machines were a tiny world of their own. Even in the commercial and academic arena, computing was a very different beast.
 
 When this book was published there were, according to an internal memo, "approximately 800 Unix systems in use outside Bell Labs, with more expected!". The Unix model of computing, of small programs communicating, using text as a common interchange format, wasn't that widely known.
 
@@ -113,3 +113,6 @@ Why?
 
 Because when Dan asked me to speak, it was the first thing that came into my head and we thought it might be fun :)
 --
+
+== !
+
