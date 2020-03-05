@@ -62,6 +62,10 @@ char escape(std::string const& pattern, size_t& index) {
     : ch;
 }
 
+matcher make_class_matcher(std::string const& pattern, size_t& index) {
+  throw std::runtime_error("Haven't implemented class matcher yet");
+}
+
 matcher make_matcher(std::string const& pattern, size_t& index) {
   char ch = pattern[index];
 
@@ -71,6 +75,8 @@ matcher make_matcher(std::string const& pattern, size_t& index) {
     return matcher(isBol, 0);
   if (ch == '$' && index == pattern.length()-1)
     return matcher(isEol, 0);
+  if (ch == '[')
+    return make_class_matcher(pattern, ++index);
 
   if (ch == escape_char)
     ch = escape(pattern, index);
