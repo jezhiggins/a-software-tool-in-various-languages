@@ -114,5 +114,35 @@ Why?
 Because when Dan asked me to speak, it was the first thing that came into my head and we thought it might be fun :)
 --
 
+[background-image='images/stip-contents.png']
+[background-size='816px 1178px']
 == !
 
+[NOTE.speaker]
+--
+The book is arranged in 8 chapters, and they kind of build on each other. The first program in the first chapter just copies input to output, and build up through charcounts, linecount, wordcount. The second chapter has programs for stripping or adding tabs, simple text compression, a print-preprocessor (because printing's always been a pain). I'm just getting into file manipulation, the end of that chapter is a program a bit like tar. Chapter 6 builds an ED like line editor, chapter 7 is a nroff-a-like, and chapter 8 is a macro processor. A lot, if not all of these programs, are lightweight versions of the Unix tools we all still use today (which is kind of astonishing in itself).
+--
+
+[background-image='images/stip-find.png']
+[background-size='825px 1192px']
+== !
+
+[NOTE.speaker]
+--
+For this talk, because I'm an idiot, I decided to do the centre piece of chapter five which is, basically, grep.
+
+This says
+
+find reads its input a line at a time and writes to its output those lines which match the specified text pattern. A text pattern is the concatentation of the following elements
+    c       literal character
+    ?       any character except newline
+    %       beginning of line
+    $       end of line
+    [...]   character class
+    [^...]  negated character class
+    *       closure (zero or more occurrences of previous pattern)
+    @c      escaped characters
+and so on.
+
+This is a proper piece of programming right? 
+--
