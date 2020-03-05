@@ -3,32 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <functional>
-
-enum class match_type {
-    Bol,
-    Literal
-};
-
-class matcher {
-public:
-    typedef typename std::function<bool(const std::string&, size_t)> match_fn;
-
-    matcher(match_fn fn, size_t advance) :
-      fn_(fn),
-      advance_(advance) {
-    }
-
-    bool match(const std::string& line, size_t& index) const {
-      auto ok = fn_(line, index);
-      if (ok) index += advance_;
-      return ok;
-    }
-
-private:
-    match_fn fn_;
-    size_t advance_;
-};
+#include "matcher.hpp"
 
 class pattern_matcher {
 public:
@@ -37,6 +12,7 @@ public:
     } // pattern_matcher
 
     bool match(const std::string& line) const;
+
 private:
     bool amatch(const std::string& line, size_t index) const;
 
