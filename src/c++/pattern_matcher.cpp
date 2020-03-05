@@ -3,7 +3,7 @@
 
 ///////////////////////////////
 bool pattern_matcher::match(
-    const std::string& line
+    std::string const& line
 ) const {
   size_t index = 0;
   bool matches = false;
@@ -17,7 +17,7 @@ bool pattern_matcher::match(
 }
 
 bool pattern_matcher::amatch(
-    const std::string& line,
+    std::string const& line,
     size_t index
 ) const {
  for (auto m : matchers_)

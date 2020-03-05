@@ -6,14 +6,14 @@
 
 class matcher {
 public:
-    typedef typename std::function<bool(const std::string&, size_t)> match_fn;
+    typedef typename std::function<bool(std::string const&, size_t)> match_fn;
 
     matcher(match_fn fn, size_t advance) :
         fn_(fn),
         advance_(advance) {
     }
 
-    bool match(const std::string& line, size_t& index) const;
+    bool match(std::string const& line, size_t& index) const;
 
 private:
     match_fn fn_;

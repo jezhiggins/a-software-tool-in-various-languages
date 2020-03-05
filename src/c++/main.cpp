@@ -4,7 +4,7 @@
 #include "pattern_matcher.hpp"
 
 std::string get_pattern(int argc, const char* argv[]);
-pattern_matcher make_pattern_matcher(const std::string& pattern);
+pattern_matcher make_pattern_matcher(std::string const& pattern);
 std::string read_line(std::istream& is);
 
 void do_main(int argc, const char* argv[]);

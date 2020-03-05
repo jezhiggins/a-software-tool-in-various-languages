@@ -11,14 +11,14 @@ public:
       matchers_(matchers) {
     } // pattern_matcher
 
-    bool match(const std::string& line) const;
+    bool match(std::string const& line) const;
 
 private:
-    bool amatch(const std::string& line, size_t index) const;
+    bool amatch(std::string const& line, size_t index) const;
 
     std::vector<matcher> matchers_;
 };
 
-pattern_matcher make_pattern_matcher(const std::string& pattern);
+pattern_matcher make_pattern_matcher(std::string const& pattern);
 
 #endif //A_SOFTWARE_TOOL_IN_VARIOUS_LANGUAGES_PATTERN_MATCHER_HPP
