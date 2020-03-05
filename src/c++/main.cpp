@@ -1,16 +1,26 @@
 #include <iostream>
 
 #include "arguments.hpp"
-#include "matcher.hpp"
+#include "pattern_matcher.hpp"
 
 std::string get_pattern(int argc, const char* argv[]);
-matcher make_matcher(const std::string& pattern);
+pattern_matcher make_pattern_matcher(const std::string& pattern);
 std::string read_line(std::istream& is);
 
+void do_main(int argc, const char* argv[]);
+
 int main(int argc, const char* argv[]) {
+  try {
+    do_main(argc, argv);
+  } catch(std::exception& ex) {
+    std::cout << "OOPS! " << ex.what() << "\n";
+  }
+}
+
+void do_main(int argc, const char* argv[]) {
   auto const pattern = get_pattern(argc, argv);
 
-  auto const matcher = make_matcher(pattern);
+  auto const matcher = make_pattern_matcher(pattern);
 
   while(std::cin) {
     auto const line = read_line(std::cin);
