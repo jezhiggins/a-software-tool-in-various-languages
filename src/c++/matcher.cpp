@@ -1,30 +1,31 @@
 #include <map>
 #include "matcher.hpp"
+#include "string_walker.hpp"
 
-bool matcher::match(std::string const& line, size_t& index) const {
-    auto ok = fn_(line, index);
-    if (ok) index += advance_;
+bool matcher::match(string_walker& line) const {
+    auto ok = fn_(line);
+    if (ok) line.advance(advance_);
     return ok;
 }
 
 ///////////////////////////////
-bool isBol(std::string const& line, size_t index) {
-    return index == 0;
+bool isBol(string_walker& line) {
+    return line.bol();
 }
-bool isEol(std::string const& line, size_t index) {
-    return index == line.length();
+bool isEol(string_walker& line) {
+    return line.eol();
 }
-bool isAny(std::string const& line, size_t index) {
+bool isAny(string_walker& line) {
     return true;
 }
 auto isLiteral(char c) {
-    return [c](std::string const& line, size_t index) {
-        return line[index] == c;
+    return [c](string_walker& line) {
+        return *line == c;
     };
 }
 auto isInClass(std::string const& chars) {
-    return [chars](std::string const& line, size_t index) {
-        return chars.find(line[index]) != std::string::npos;
+    return [chars](string_walker& line) {
+        return chars.find(*line) != std::string::npos;
     };
 }
 

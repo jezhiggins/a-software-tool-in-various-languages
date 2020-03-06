@@ -1,5 +1,6 @@
 #include "pattern_matcher.hpp"
 #include "matcher.hpp"
+#include "string_walker.hpp"
 
 ///////////////////////////////
 bool pattern_matcher::match(
@@ -20,11 +21,12 @@ bool pattern_matcher::amatch(
     std::string const& line,
     size_t index
 ) const {
- for (auto m : matchers_)
-    if (!m.match(line, index))
-      return false;
+    auto walker = string_walker(line, index);
+    for (auto m : matchers_)
+        if (!m.match(walker))
+            return false;
 
-  return true;
+    return true;
 }
 
 ///////////////////////////////

@@ -5,16 +5,16 @@
 
 class string_walker {
 public:
-    string_walker(std::string const& line) :
-        line_(line) {
+    string_walker(std::string const& line, size_t initial_offset) :
+        line_(line),
+        pos_(initial_offset) {
     }
+    string_walker(string_walker const&) = delete;
+    string_walker& operator=(string_walker const&) = delete;
 
+    bool bol() const { return pos_ == 0; }
     bool eol() const { return pos_ == line_.length(); }
-    char peek() const {
-        throw_if_eol();
-        return line_[pos_]
-    }
-    char operator*() {
+    char operator*() const {
         throw_if_eol();
         return line_[pos_];
     }
@@ -23,7 +23,7 @@ public:
     }
 
 private:
-    void throw_if_eol() {
+    void throw_if_eol() const {
         if (eol())
             throw std::runtime_error("End of input");
     }

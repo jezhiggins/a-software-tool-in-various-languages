@@ -4,16 +4,18 @@
 #include <string>
 #include <functional>
 
+class string_walker;
+
 class matcher {
 public:
-    typedef typename std::function<bool(std::string const&, size_t)> match_fn;
+    typedef typename std::function<bool(string_walker& line)> match_fn;
 
     matcher(match_fn fn, size_t advance) :
         fn_(fn),
         advance_(advance) {
     }
 
-    bool match(std::string const& line, size_t& index) const;
+    bool match(string_walker& line) const;
 
 private:
     match_fn fn_;
