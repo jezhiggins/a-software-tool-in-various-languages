@@ -41,38 +41,39 @@ auto const match_any = '?';
 auto const match_bol = '%';
 auto const match_eol = '$';
 auto const start_class = '[';
+auto const class_negated = '^';
 
-char escape(std::string const& pattern, size_t& index) {
-    if (index+1 == pattern.length())
+char escape(string_walker& pattern_walker) {
+    if (!pattern_walker.available())
         return escape_char;
-    char ch = pattern[++index];
+    char ch = *pattern_walker++;
     auto is_escape = escape_sequences().find(ch);
     return (is_escape != escape_sequences().end())
            ? is_escape->second
            : ch;
 }
 
-matcher make_class_matcher(std::string const& pattern, size_t& index) {
-    auto character_class = read_character_class(pattern, index);
+matcher make_class_matcher(string_walker& pattern_walker) {
+    auto character_class = read_character_class(pattern_walker);
 
-    if (character_class[0] == '^')
+    if (character_class[0] == class_negated)
       return matcher(is_not_in_class(character_class.substr(1)), 1);
     return matcher(is_in_class(character_class), 1);
 }
 
-matcher make_matcher(std::string const& pattern, size_t& index) {
-    char ch = pattern[index];
+matcher make_matcher(string_walker& pattern_walker) {
+    char ch = *pattern_walker;
 
     if (ch == match_any)
         return matcher(is_any, 1);
-    if (ch == match_bol && index == 0)
+    if (ch == match_bol && pattern_walker.bol())
         return matcher(is_bol, 0);
-    if (ch == match_eol && index == pattern.length()-1)
+    if (ch == match_eol && pattern_walker.eol())
         return matcher(is_eol, 0);
     if (ch == start_class)
-        return make_class_matcher(pattern, ++index);
+        return make_class_matcher(++pattern_walker);
 
     if (ch == escape_char)
-        ch = escape(pattern, index);
+        ch = escape(pattern_walker);
     return matcher(is_literal(ch), 1);
 }

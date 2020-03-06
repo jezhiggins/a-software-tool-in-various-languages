@@ -3,9 +3,9 @@
 
 #include <string>
 
-std::string read_character_class(
-    std::string const& arg,
-    size_t& index
-);
+class string_walker;
+
+std::string read_character_class(string_walker& pattern_walker);
+
 
 #endif //BRUMJS_CHARACTER_CLASS_HPP

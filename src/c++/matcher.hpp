@@ -22,6 +22,6 @@ private:
     size_t advance_;
 };
 
-matcher make_matcher(std::string const& pattern, size_t& index);
+matcher make_matcher(string_walker& pattern_walker);
 
 #endif //A_SOFTWARE_TOOL_MATCHER_HPP

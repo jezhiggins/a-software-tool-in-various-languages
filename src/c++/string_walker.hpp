@@ -14,6 +14,9 @@ public:
 
     bool bol() const { return pos_ == 0; }
     bool eol() const { return pos_ == line_.length(); }
+    bool available() const { return pos_ < line_.length()-1; }
+    char peek_before() const { return line_[pos_-1]; }
+    char peek_ahead() const { return line_[pos_+1]; }
     char operator*() const {
         if (eol()) return 0;
         return line_[pos_];
@@ -23,6 +26,15 @@ public:
 
       advance(1);
       return *this;
+    }
+    string_walker const operator++(int) {
+      throw_if_eol();
+
+      auto p = pos_;
+
+      advance(1);
+
+      return string_walker { line_, p };
     }
     void advance(size_t count) {
         if (count)

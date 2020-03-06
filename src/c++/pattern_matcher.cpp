@@ -31,10 +31,10 @@ bool pattern_matcher::amatch(
 
 ///////////////////////////////
 pattern_matcher make_pattern_matcher(std::string const& pattern) {
-  std::vector<matcher> matchers;
+  auto matchers = std::vector<matcher> { };
 
-  for (size_t i = 0; i != pattern.length(); ++i) {
-    auto m = make_matcher(pattern, i);
+  for (auto pw = string_walker { pattern, 0 }; !pw.eol(); ++pw) {
+    auto m = make_matcher(pw);
     matchers.push_back(m);
   }
 
