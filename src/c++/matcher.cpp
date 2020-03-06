@@ -46,7 +46,7 @@ auto const class_negated = '^';
 char escape(string_walker& pattern_walker) {
     if (!pattern_walker.available())
         return escape_char;
-    char ch = *pattern_walker++;
+    char ch = *++pattern_walker;
     auto is_escape = escape_sequences().find(ch);
     return (is_escape != escape_sequences().end())
            ? is_escape->second
