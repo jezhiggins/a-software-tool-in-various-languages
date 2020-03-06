@@ -1,6 +1,8 @@
 #include <map>
 #include "matcher.hpp"
 #include "string_walker.hpp"
+#include "escape_sequences.hpp"
+#include "character_class.hpp"
 
 bool matcher::match(string_walker& line) const {
     auto ok = fn_(line);
@@ -34,26 +36,21 @@ auto const match_any = '?';
 auto const match_bol = '%';
 auto const match_eol = '$';
 auto const start_class = '[';
-auto const end_class = ']';
-auto const escape_char = '@';
-
-auto escape_sequence = std::map<char, char> {
-    { 'n', '\n' },
-    { 't', '\t' }
-};
 
 char escape(std::string const& pattern, size_t& index) {
     if (index+1 == pattern.length())
         return escape_char;
     char ch = pattern[++index];
-    auto is_escape = escape_sequence.find(ch);
-    return (is_escape != escape_sequence.end())
+    auto is_escape = escape_sequences().find(ch);
+    return (is_escape != escape_sequences().end())
            ? is_escape->second
            : ch;
 }
 
 matcher make_class_matcher(std::string const& pattern, size_t& index) {
-    auto start_index = index;
+    auto character_class = read_character_class(pattern, index);
+
+    return matcher(is_in_class(character_class), 1);
 }
 
 matcher make_matcher(std::string const& pattern, size_t& index) {
