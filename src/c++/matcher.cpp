@@ -79,7 +79,7 @@ matcher make_matcher(string_walker& pattern_walker) {
         return matcher(is_any, 1);
     if (ch == match_bol && pattern_walker.bol())
         return matcher(is_bol, 0);
-    if (ch == match_eol && pattern_walker.eol())
+    if (ch == match_eol && !pattern_walker.available())
         return matcher(is_eol, 0);
     if (ch == start_class)
         return make_class_matcher(++pattern_walker);
