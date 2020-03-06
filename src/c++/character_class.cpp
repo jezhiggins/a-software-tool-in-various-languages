@@ -43,6 +43,9 @@ std::string read_character_class(
     insert = *c++;
   }
 
+  if (c == arg.end())
+    throw std::runtime_error("Bad pattern - missing ]");
+
   index += std::distance(arg.begin() + index, c);
   return expanded;
 } // read_character_class
