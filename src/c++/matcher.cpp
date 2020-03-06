@@ -18,7 +18,7 @@ bool is_eol(string_walker& line) {
     return line.eol();
 }
 bool is_any(string_walker& line) {
-    return true;
+    return !line.eol();
 }
 auto is_literal(char c) {
     return [c](string_walker& line) {
@@ -57,7 +57,7 @@ matcher make_matcher(std::string const& pattern, size_t& index) {
     char ch = pattern[index];
 
     if (ch == match_any)
-        return matcher(is_any, 0);
+        return matcher(is_any, 1);
     if (ch == match_bol && index == 0)
         return matcher(is_bol, 0);
     if (ch == match_eol && index == pattern.length()-1)
