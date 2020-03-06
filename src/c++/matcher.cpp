@@ -9,21 +9,21 @@ bool matcher::match(string_walker& line) const {
 }
 
 ///////////////////////////////
-bool isBol(string_walker& line) {
+bool is_bol(string_walker& line) {
     return line.bol();
 }
-bool isEol(string_walker& line) {
+bool is_eol(string_walker& line) {
     return line.eol();
 }
-bool isAny(string_walker& line) {
+bool is_any(string_walker& line) {
     return true;
 }
-auto isLiteral(char c) {
+auto is_literal(char c) {
     return [c](string_walker& line) {
         return *line == c;
     };
 }
-auto isInClass(std::string const& chars) {
+auto is_in_class(std::string const& chars) {
     return [chars](string_walker& line) {
         return chars.find(*line) != std::string::npos;
     };
@@ -53,22 +53,22 @@ char escape(std::string const& pattern, size_t& index) {
 }
 
 matcher make_class_matcher(std::string const& pattern, size_t& index) {
-    throw std::runtime_error("Haven't implemented class matcher yet");
+    auto start_index = index;
 }
 
 matcher make_matcher(std::string const& pattern, size_t& index) {
     char ch = pattern[index];
 
     if (ch == match_any)
-        return matcher(isAny, 0);
+        return matcher(is_any, 0);
     if (ch == match_bol && index == 0)
-        return matcher(isBol, 0);
+        return matcher(is_bol, 0);
     if (ch == match_eol && index == pattern.length()-1)
-        return matcher(isEol, 0);
+        return matcher(is_eol, 0);
     if (ch == start_class)
         return make_class_matcher(pattern, ++index);
 
     if (ch == escape_char)
         ch = escape(pattern, index);
-    return matcher(isLiteral(ch), 1);
+    return matcher(is_literal(ch), 1);
 }
