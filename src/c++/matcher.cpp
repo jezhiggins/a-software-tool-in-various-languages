@@ -30,6 +30,11 @@ auto is_in_class(std::string const& chars) {
         return chars.find(*line) != std::string::npos;
     };
 }
+auto is_not_in_class(std::string const& chars) {
+  return [chars](string_walker& line) {
+      return chars.find(*line) == std::string::npos;
+  };
+}
 
 /////////////////////////////////
 auto const match_any = '?';
@@ -50,6 +55,8 @@ char escape(std::string const& pattern, size_t& index) {
 matcher make_class_matcher(std::string const& pattern, size_t& index) {
     auto character_class = read_character_class(pattern, index);
 
+    if (character_class[0] == '^')
+      return matcher(is_not_in_class(character_class.substr(1)), 1);
     return matcher(is_in_class(character_class), 1);
 }
 
