@@ -15,17 +15,25 @@ public:
     bool bol() const { return pos_ == 0; }
     bool eol() const { return pos_ == line_.length(); }
     char operator*() const {
-        throw_if_eol();
+        if (eol()) return 0;
         return line_[pos_];
     }
+    string_walker& operator++() {
+      throw_if_eol();
+
+      advance(1);
+      return *this;
+    }
     void advance(size_t count) {
+        if (count)
+          throw_if_eol();
         pos_ += count;
     }
 
 private:
     void throw_if_eol() const {
         if (eol())
-            throw std::runtime_error("End of input");
+            throw std::runtime_error("End of input : " + line_);
     }
 
     std::string const& line_;
