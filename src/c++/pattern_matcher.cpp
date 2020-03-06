@@ -30,10 +30,17 @@ bool pattern_matcher::amatch(
 }
 
 ///////////////////////////////
+auto const closure_char = '*';
+
 pattern_matcher make_pattern_matcher(std::string const& pattern) {
   auto matchers = std::vector<matcher> { };
 
   for (auto pw = string_walker { pattern, 0 }; !pw.eol(); ++pw) {
+    if (*pw == closure_char && !pw.bol()) {
+      matchers.back().closure();
+      continue;
+    }
+
     auto m = make_matcher(pw);
     matchers.push_back(m);
   }

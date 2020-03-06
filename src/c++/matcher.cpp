@@ -5,9 +5,20 @@
 #include "character_class.hpp"
 
 bool matcher::match(string_walker& line) const {
+    return closure_
+        ? closure_match(line)
+        : one_match(line);
+}
+
+bool matcher::one_match(string_walker& line) const {
     auto ok = fn_(line);
     if (ok) line.advance(advance_);
     return ok;
+}
+
+bool matcher::closure_match(string_walker &line) const {
+    while (one_match(line));
+    return true;
 }
 
 ///////////////////////////////

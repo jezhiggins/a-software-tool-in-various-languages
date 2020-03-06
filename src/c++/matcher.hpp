@@ -12,14 +12,21 @@ public:
 
     matcher(match_fn fn, size_t advance) :
         fn_(fn),
-        advance_(advance) {
+        advance_(advance),
+        closure_(false) {
     }
 
     bool match(string_walker& line) const;
 
+    void closure() { closure_ = true; }
+
 private:
+    bool one_match(string_walker& line) const;
+    bool closure_match(string_walker& line) const;
+
     match_fn fn_;
     size_t advance_;
+    bool closure_;
 };
 
 matcher make_matcher(string_walker& pattern_walker);
