@@ -17,6 +17,7 @@ public:
     }
 
     bool match(string_walker& line) const;
+    bool is_closure() const { return closure_; }
 
     void closure() { closure_ = true; }
 
