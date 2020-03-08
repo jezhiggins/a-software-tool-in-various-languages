@@ -5,12 +5,16 @@
 
 class string_walker {
 public:
-    string_walker(std::string const& line, size_t initial_offset) :
+    string_walker(std::string const& line, size_t initial_offset = 0) :
         line_(line),
         pos_(initial_offset) {
     }
     string_walker(string_walker const&) = delete;
     string_walker& operator=(string_walker const&) = delete;
+
+    string_walker clone() const {
+      return string_walker(line_, pos_);
+    }
 
     bool bol() const { return pos_ == 0; }
     bool eol() const { return pos_ == line_.length(); }

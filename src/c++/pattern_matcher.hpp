@@ -5,6 +5,8 @@
 #include <vector>
 #include "matcher.hpp"
 
+class string_walker;
+
 class pattern_matcher {
 public:
     pattern_matcher(std::vector<matcher> const& matchers) :
@@ -14,7 +16,7 @@ public:
     bool match(std::string const& line) const;
 
 private:
-    bool amatch(std::string const& line, size_t index) const;
+    bool amatch(string_walker line) const;
 
     std::vector<matcher> matchers_;
 };

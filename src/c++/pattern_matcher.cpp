@@ -6,24 +6,23 @@
 bool pattern_matcher::match(
     std::string const& line
 ) const {
-  size_t index = 0;
   bool matches = false;
 
-  while (index != line.length() && !matches) {
-    matches = amatch(line, index);
-    ++index;
+  auto walker = string_walker(line);
+
+  while (!walker.eol() && !matches) {
+    matches = amatch(walker.clone());
+    ++walker;
   }
 
   return matches;
 }
 
 bool pattern_matcher::amatch(
-    std::string const& line,
-    size_t index
+    string_walker line
 ) const {
-    auto walker = string_walker(line, index);
     for (auto m : matchers_)
-        if (!m.match(walker))
+        if (!m.match(line))
             return false;
 
     return true;
