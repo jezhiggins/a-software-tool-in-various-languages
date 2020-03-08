@@ -51,7 +51,7 @@ public:
     }
     bool rewind() {
         --pos_;
-        return pos_ > snapshot_;
+        return pos_ >= snapshot_;
     }
 private:
     void throw_if_eol() const {
