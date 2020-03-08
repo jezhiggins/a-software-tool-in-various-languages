@@ -23,12 +23,12 @@ bool pattern_matcher::match(
   auto walker = string_walker(line);
 
   while (!walker.eol() && !matches) {
-    matches = amatch(
-        walker.clone(),
-        matchers_.begin(),
-        matchers_.end()
-    );
-    ++walker;
+      matches = amatch(
+          walker.clone(),
+          matchers_.begin(),
+          matchers_.end()
+      );
+      ++walker;
   }
 
   return matches;
@@ -40,15 +40,15 @@ bool amatch(
     pattern_matcher::matcher_iterator end
 ) {
     if (from == end)
-      return false;
+        return false;
 
-    for ( ; from != end; ++from)
-        if (from->is_closure()) {
-          return closure_match(line, from, end);
-        } else {
-          if (!from->match(line))
-              return false;
-        }
+    for ( ; from != end; ++from) {
+        if (from->is_closure())
+            return closure_match(line, from, end);
+
+        if (!from->match(line))
+            return false;
+    }
 
     return true;
 }
@@ -61,8 +61,8 @@ bool closure_match(
   line.snapshot();
   while (from->match(line));
   do {
-    if (amatch(line.clone(), from + 1, end))
-      return true;
+      if (amatch(line.clone(), from + 1, end))
+          return true;
   } while (line.rewind());
 
   return false;
@@ -72,17 +72,17 @@ bool closure_match(
 auto const closure_char = '*';
 
 pattern_matcher make_pattern_matcher(std::string const& pattern) {
-  auto matchers = std::vector<matcher> { };
+    auto matchers = std::vector<matcher> { };
 
-  for (auto pw = string_walker { pattern, 0 }; !pw.eol(); ++pw) {
-    if (*pw == closure_char && !pw.bol()) {
-      matchers.back().closure();
-      continue;
+    for (auto pw = string_walker { pattern, 0 }; !pw.eol(); ++pw) {
+        if (*pw == closure_char && !pw.bol()) {
+            matchers.back().closure();
+            continue;
+        }
+
+        auto m = make_matcher(pw);
+        matchers.push_back(m);
     }
 
-    auto m = make_matcher(pw);
-    matchers.push_back(m);
-  }
-
-  return pattern_matcher { matchers };
+    return pattern_matcher { matchers };
 }

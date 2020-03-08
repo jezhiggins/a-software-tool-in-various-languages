@@ -10,7 +10,7 @@ class string_walker;
 class pattern_matcher {
 public:
     explicit pattern_matcher(std::vector<matcher> const& matchers) :
-      matchers_(matchers) {
+        matchers_(matchers) {
     } // pattern_matcher
 
     bool match(std::string const& line) const;
