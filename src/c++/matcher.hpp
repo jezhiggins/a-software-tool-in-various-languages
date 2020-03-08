@@ -22,9 +22,6 @@ public:
     void closure() { closure_ = true; }
 
 private:
-    bool one_match(string_walker& line) const;
-    bool closure_match(string_walker& line) const;
-
     match_fn fn_;
     size_t advance_;
     bool closure_;

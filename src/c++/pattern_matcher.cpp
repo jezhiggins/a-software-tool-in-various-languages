@@ -2,30 +2,70 @@
 #include "matcher.hpp"
 #include "string_walker.hpp"
 
+bool amatch(
+    string_walker line,
+    pattern_matcher::matcher_iterator from,
+    pattern_matcher::matcher_iterator end
+);
+
+bool closure_match(
+    string_walker& line,
+    pattern_matcher::matcher_iterator from,
+    pattern_matcher::matcher_iterator end
+);
+
 ///////////////////////////////
 bool pattern_matcher::match(
     std::string const& line
 ) const {
-  bool matches = false;
+  auto matches = false;
 
   auto walker = string_walker(line);
 
   while (!walker.eol() && !matches) {
-    matches = amatch(walker.clone());
+    matches = amatch(
+        walker.clone(),
+        matchers_.begin(),
+        matchers_.end()
+    );
     ++walker;
   }
 
   return matches;
 }
 
-bool pattern_matcher::amatch(
-    string_walker line
-) const {
-    for (auto m : matchers_)
-        if (!m.match(line))
-            return false;
+bool amatch(
+    string_walker line,
+    pattern_matcher::matcher_iterator from,
+    pattern_matcher::matcher_iterator end
+) {
+    if (from == end)
+      return false;
+
+    for ( ; from != end; ++from)
+        if (from->is_closure()) {
+          return closure_match(line, from, end);
+        } else {
+          if (!from->match(line))
+              return false;
+        }
 
     return true;
+}
+
+bool closure_match(
+    string_walker& line,
+    pattern_matcher::matcher_iterator from,
+    pattern_matcher::matcher_iterator end
+) {
+  line.snapshot();
+  while (from->match(line));
+  do {
+    if (amatch(line.clone(), from + 1, end))
+      return true;
+  } while (line.rewind());
+
+  return false;
 }
 
 ///////////////////////////////

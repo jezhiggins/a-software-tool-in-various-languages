@@ -46,6 +46,13 @@ public:
         pos_ += count;
     }
 
+    void snapshot() {
+      snapshot_ = pos_;
+    }
+    bool rewind() {
+      --pos_;
+      return pos_ > snapshot_;
+    }
 private:
     void throw_if_eol() const {
         if (eol())
@@ -54,6 +61,7 @@ private:
 
     std::string const& line_;
     size_t pos_;
+    size_t snapshot_;
 };
 
 #endif //BRUMJS_STRING_WALKER_HPP

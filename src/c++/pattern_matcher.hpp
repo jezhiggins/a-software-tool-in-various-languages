@@ -9,15 +9,15 @@ class string_walker;
 
 class pattern_matcher {
 public:
-    pattern_matcher(std::vector<matcher> const& matchers) :
+    explicit pattern_matcher(std::vector<matcher> const& matchers) :
       matchers_(matchers) {
     } // pattern_matcher
 
     bool match(std::string const& line) const;
 
-private:
-    bool amatch(string_walker line) const;
+    typedef std::vector<matcher>::const_iterator matcher_iterator;
 
+private:
     std::vector<matcher> matchers_;
 };
 
