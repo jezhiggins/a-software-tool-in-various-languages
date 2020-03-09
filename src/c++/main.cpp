@@ -13,7 +13,8 @@ int main(int argc, const char* argv[]) {
     try {
         do_main(argc, argv);
     } catch(std::exception& ex) {
-        std::cout << "OOPS! " << ex.what() << "\n";
+        std::cerr << "OOPS! " << ex.what() << "\n";
+        return -1;
     }
 }
 
