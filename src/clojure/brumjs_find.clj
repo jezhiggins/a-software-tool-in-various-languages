@@ -9,9 +9,9 @@
       (let [test-fn
         (cond
          (empty? source) nil
-         (= \? result-char) [any-char 1]
-         (and (= \% result-char) (= source patt)) [start-of-line? 0]
-         (and (= \$ result-char) (empty? rest-source)) [end-of-line? 0]
+         (= \? result-char) '(any-char 1)
+         (and (= \% result-char) (= source patt)) '(start-of-line? 0)
+         (and (= \$ result-char) (empty? rest-source)) '(end-of-line? 0)
          :else [(partial match-char? result-char) 1])]
         (if (nil? test-fn)
           result
