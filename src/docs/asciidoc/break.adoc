@@ -27,7 +27,7 @@ Hello again :)
 
 So I've burbled on a bit about Software Tools in Pascal, about regular expressions, and about the hoops of implementing them in late-70s vintage Pascal.
 
-In the next half an hour or so, we're going to look at the same problem - this grep like pattern matcher - in C++, a Lisp, and JavaScript.
+In the next half an hour or so, we're going to look at the same problem - this grep like pattern matcher - in {cpp}, a Lisp, and JavaScript.
 
 Ready?
 
