@@ -2,6 +2,7 @@
 (if (nil? pattern-string)
   (do (println "Usage: find pattern") (. System exit -1)))
 
+(defn any-char [cand] true)
 (defn match-char? [cand, expected] (= cand expected))
 (defn end-of-line? [cand] (nil? cand))
 
@@ -11,6 +12,7 @@
       (let [test-fn
         (cond
          (empty? source) nil
+         (= \? result-char) [any-char 1]
          (and (= \$ result-char) (empty? rest-source)) [end-of-line? 0]
          :else [(partial match-char? result-char) 1])]
         (if (nil? test-fn)
