@@ -7,6 +7,10 @@ Jez Higgins, jez@jezuk.co.uk
 
 include::introduction.adoc[]
 
+include::pascal.adoc[]
+
+include::break.adoc[]
+
 ++++
 <div id="talk-header" class="slide-header">
   <small class="slide-header-text">Brum.js March 2020, @jezhiggins</small>

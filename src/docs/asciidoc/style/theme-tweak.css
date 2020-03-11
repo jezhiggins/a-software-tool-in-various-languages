@@ -11,3 +11,7 @@
 .slide-header-text {
   float: right;
 }
+
+.reveal pre code {
+  max-height: unset;
+}

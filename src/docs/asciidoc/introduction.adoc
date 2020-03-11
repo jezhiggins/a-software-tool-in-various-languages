@@ -10,7 +10,7 @@ Jez Higgins
 --
 Hello everyone - I'm Jez. I'm a freelance software grandad and I'm available to prevent you falling down the old mine shaft, because I have a yawning hole in my diary from the end of this month :)
 
-Dan was kind enough to invite me to speak here at Brum.js just over a year ago, during which I didn't mention JavaScript once. There will be some JavaScript this evening. But first, Pascal!
+Dan was kind enough to invite me to speak here at Brum.js just over a year ago, during which I didn't mention JavaScript once. There will be some JavaScript this evening.
 --
 
 [background-image='images/software-tools-in-pascal-cover.jpg']
@@ -18,15 +18,17 @@ Dan was kind enough to invite me to speak here at Brum.js just over a year ago, 
 
 [NOTE.speaker]
 --
+But first, Pascal!
+
 This is one of my favourite books about software. Written, as you can see, by Brian Kernighan and Bill Plauger, it was first published in 1981 and remains in print.
 
-Are you familiar with Kernighan and Plauger. Both were long time members of staff at Bell Labs, the home of Unix and consequently of so much of the modern computing landscape.
+Are you familiar with Kernighan and Plauger? Both were members of staff at Bell Labs, the home of Unix and consequently of so much of the modern computing landscape. Plauger in the early 70s, Kernighan for a pretty considerable period beyond that.
 
-Kernighan was involved in Unix development, indeed coined the name Unix, and contributed a number of what we now consider "standard Unix" programs particularly around typesetting, and he is the K of AWK. He's an amazingly good technical communicator, both as a writer and speaker. There's a Kernighan playlist on the Computerphile Youtube channel, and I absolutely recommend it to you.
+Kernighan was involved in Unix development, indeed coined the name Unix, and contributed a number of what we now consider "standard Unix" programs particularly around typesetting, and he is the Kof K&R C and also of AWK. He's an amazingly good technical communicator, both as a writer and speaker. There's a Kernighan playlist on the Computerphile Youtube channel, and I absolutely recommend it to you.
 
-Plauger wasn't directly but he and Kernighan had adjacent offices for a time. When this book was written Plauger had left Bell Labs and founded Whitesmiths, which was the first company to offer commercial C compiler. Plauger's was involved in both C and C++ standardisation, implemented the C and the C++ standard libraries, wrote and was editor of C Users Journal for years.
+I don't think Bill Plauger was directly involved in Unix but he and Kernighan had adjacent offices for a time. When this book was written Plauger had left Bell Labs and founded Whitesmiths, which was the first company to offer a commercial C compiler. Plauger was subsequently involved in both C and C++ standardisation, implemented the C and the C++ standard libraries, wrote and was editor of C Users Journal for years.
 
-Between them, they've written a number of books, I'd recommend them too - Plauger's Programming on Purpose in particular, and Kernighan and Pike's The Unix Programming Environment and their Practice of Programming. Wonderful.
+Between them, they've written a number of books, I'd recommend them pretty universally - Plauger's Programming on Purpose in particular, and Kernighan and Pike's The Unix Programming Environment and their Practice of Programming. Wonderful.
 
 Anyway, this book - Software Tools in Pascal.
 --
@@ -72,7 +74,7 @@ The first chapter, Getting Started, doesn't quite start with Hello World (a prog
 
 [NOTE.speaker]
 --
-When I first read Software Tools in Pascal, I’d just started my first substantial job on a Unix system (in fact four Unix systems, all slightly different) and I was only passingly familiar with a handful of command line tools. The idea that these small programs not only did simple things, but could be combined like some kind of giant tokusatsu robot to do very powerful things was really quite startling.
+When I first read Software Tools in Pascal, I’d just started my first substantial job on a Unix system (in fact four Unix systems, all slightly different) and I was only passingly familiar with a handful of command line tools. The idea that these small programs did simple things, but when combined like some kind of giant tokusatsu robot could do very powerful things was really quite startling.
 --
 
 [background-image='images/software-tools-in-pascal-cover.jpg']
@@ -85,7 +87,7 @@ Good Programming is not learned from generalities, but by seeing how significant
 
 [NOTE.speaker]
 --
-After reading and rereading the book several times, last summer I took up the invitation to imitate, and starting reimplementing the programs in the book. I'd just come of a stretch of C++ work, C++ is a pretty interesting place at the moment, so I chose C++.
+After reading and rereading the book several times, last summer I took up the invitation on the cover to imitate, and started reimplementing the programs in the book. I'd just come of a stretch of C++ work, C++ is a pretty interesting place at the moment, so I chose C++.
 --
 
 [background-iframe=https://www.jezuk.co.uk/tags/software-tools-in-c++.html]
@@ -107,7 +109,7 @@ Because Kernighan and Plauger did the same thing. Software Tools in Pascal is "i
 
 Pascal had been around since 1970, and by the start of the 80s it was the language of choice for a lot of universities. Certainly, I was taught Pascal in 1987/88, although they recanted the next year and converted us to C for the 88/89 academic year. So, rewriting the book in Pascal was a pragmatic move, in order to get the lessons of the book into more hands.
 
-For this talk, I'm going to take just one of their programs, and present it several times - the original Pascal, in C++, in Scheme, in Forth, and then in JavaScript.
+For this talk, I'm going to take just one of their programs, and present it several times - the original Pascal, in C++, in Lisp (or at least a Lisp), and then in JavaScript.
 
 Why?
 
@@ -133,16 +135,22 @@ For this talk, because I'm an idiot, I decided to do the centre piece of chapter
 
 This says
 
-find reads its input a line at a time and writes to its output those lines which match the specified text pattern. A text pattern is the concatentation of the following elements
-    c       literal character
-    ?       any character except newline
-    %       beginning of line
-    $       end of line
-    [...]   character class
-    [^...]  negated character class
-    *       closure (zero or more occurrences of previous pattern)
-    @c      escaped characters
+find reads its input a line at a time and writes to its output those lines which match the specified text pattern. A text pattern is the concatentation of the following elements +
+    c       literal character +
+    ?       any character except newline +
+    %       beginning of line +
+    $       end of line +
+    [...]   character class +
+    [^...]  negated character class +
+    *       closure (zero or more occurrences of previous pattern) +
+    @c      escaped characters +
 and so on.
 
-This is a proper piece of programming right? 
+(They call the * a closure, where I'd call it a Kleene Star. We're both right! Stephen Kleene invented regular expressions, back in 1951. They didn't really gain any traction until around 1968, partly through the efforts of, that man again, Ken Thompson.)
+
+Anyway ...
+
+This is a proper piece of programming right? This is not trivial - I mean it's not large, but it's not trivial, right?
+
+Before we hit the code, maybe just have a little think about how we might approach this? Any suggestions?
 --

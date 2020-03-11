@@ -1,0 +1,289 @@
+== !
+
+[source,pascal]
+----
+procedure find;
+#include "findcons.p"
+var
+    arg, lin, pat : string;
+#include "getpat.p"
+#include "match.p"
+begin
+    if (not getarg(1, arg, MAXSTR)) then
+        error ('usage: find pattern');
+    if (not getpat(arg, pat)) then
+        error ('find: illegal pattern');
+    while (getline(line, STDIN, MAXSTR)) do
+        if (match(lin, pat)) then
+            putstr(lin, STDOUT)
+end;
+----
+
+[NOTE.speaker]
+--
+For all the code I'm going to show this evening, please bear in mind that I'm showing you the final version. The code from the book goes through some intermediate stages which I'm going omit here, and the code I wrote certainly didn't spring fully formed from the top of my head.
+
+So anyway, you're looking at this and thinking, _hmm Pascal doesn't look like I thought it would_ then you're right. Pascal doesn't really look like this. Pascal, or at least the Pascal of the time, was really quite limited so Kernighan and Plauger employed all kinds of, well, hacks I guess to get past that.
+
+File inclusion is one thing - although by this point you've written the file inclusion program. Macros - error here is one - and some mangling around string types. Pascal didn't have a string type, so they have to work around it by using a fixed-length array. (By 1987, the Pascal I used still monkeyed up string types from a fixed-length array - first byte was length, then the string)  Doesn't have console io, have to provide "primitives" to do that ...
+
+Anyway, looks ok right? Read the command line argument, convert into some kind of pattern, see if the string matches.
+
+Pascal lacks, lacked anyway, any kind of higher order data structure. You've got values, and arrays, and that's it. When Kernighan and Plauger do is parse out the regex we provide on the command line into a series of tokens.
+--
+
+== !
+
+----
+%[^x]?[0-9]x$
+----
+
+[NOTE.speaker]
+--
+So this regex - start of line, not an x, something, digit, an x, eol - becomes a series of tokens
+--
+
+== !
+
+----
+%[^x]?[0-9]x$
+
+BOL
+NCCL 1 'x'
+ANY
+CCL 10 '0' '1' '2' '3' '4' '5' '6' '7' '8' '9'
+LITCHAR 'x'
+EOL
+----
+
+[NOTE.speaker]
+--
+Those tokens get packed into a string, and then the match function walks along that string performing the appropriate operation. If you're feeling keen, you could even consider this to be a form of bytecode that we're about to feed into a little virtual machine.
+--
+
+== !
+
+[source, pascal]
+----
+function match (var lin, pat: string) : boolean;
+var
+    i, pos: integer;
+begin
+    pos := 0;
+    i := 1;
+    while (lin[i] <> ENDSTR) and (pos = 0) do begin
+        pos := amatch(lin, i, pat, 1);
+        i := i + 1
+    end
+    match := (pos > 0)
+end;
+----
+
+[NOTE.speaker]
+--
+Where we're trying to match a regex, it could match anywhere in the string. If my pattern is 123, I want to find the number 123, that could be anywhere on the line.
+
+So what we do is we try and match the line. If it doesn't match, we move one character along the string and try again. And we keep going until we get a match, or we hit the end of the string.
+
+That's what's happening in this loop.
+
+Pascal doesn't have return - the return value of a function is the value assigned to the name of the function.
+
+So let's go down again.
+--
+
+== !
+
+[source,pascal]
+----
+function amatch (var lin : string; i : integer;
+    var pat : string; j : integer) : integer;
+begin
+    while (pat[j] <> ENDSTR) and (i > 0) do
+        if (omatch(lin, i, pat, j)) then
+            j := j + patsize(pat, j)
+        else
+            i := 0
+    amatch := i
+end;
+----
+
+[NOTE.speaker]
+--
+Now we're actually starting to match things. We pull the bytecode from the pattern, try it, if we succeed, we go round again.
+
+This j := j + patsize(pat, j).  You'll remember we've got these tokens all packed into a string, and they're all different lengths. patsize advances us along to then next token.
+
+This is all still pretty clear right?
+
+Any guesses what omatch looks like?
+--
+
+== !
+
+[source, pascal]
+----
+function omatch (var lin : string; i : integer;
+    var pat : string; j : integer) : boolean;
+var
+    advance : -1..1;
+begin
+    advance := -1;
+    if (lin[i] = ENDSTR) then
+        omatch := false
+    else
+        case pat[j] of
+            LITCHAR:
+                if (lin[i] = pat[j+i]) then
+                    advance := 1;
+            BOL:
+                if (i = 1) then
+                    advance := 0;
+            { ... ANY, EOL, CCL, NCCL ...}
+        end;
+    if (advance >= 0) then begin
+        i := i + advance;
+        omatch := true
+    end
+    else
+        omatch := false
+end;
+----
+
+[NOTE.speaker]
+--
+Now we're down at the point of a single part of the pattern - it's a classic big switch!
+
+advance is used to indicate the pattern matched, and also to say how much of the input did we consume? LITCHAR matches a character, so we want to move past that, while BOL is a location match - we don't want to consume anything.
+
+match loops over the input line, and calls amatch. amatch loops over the pattern, calling omatch.
+
+I won't show the code that converts the string to the tokens - you can imagine that, loops and ifs and what not.
+
+And that's it. All seems pretty simple, right?
+
+Have we missed anything?
+--
+
+[background-image='images/Asterisk.svg']
+== !
+
+[NOTE.speaker]
+--
+The Kleene star!
+
+The Kleene star is a pain in the arse, both at the parsing and at the execution phase.
+
+Why?
+
+Why is it a pain at the parsing stage?
+
+Why is it a pain at the execution stage?
+--
+
+== !
+
+----
+[0-9]*[0-9]$
+----
+
+[NOTE.speaker]
+--
+Consider this - I want to match lines which end with a number, a digit followed by one or more digits.
+
+The Kleene star is a pain because it applies to the construct before! This is awkward-ish at parse time, but manageable.
+--
+
+== !
+
+----
+%[0-9]*[0-9]$
+----
+
+----
+99999
+
+555
+
+0
+----
+
+[NOTE.speaker]
+--
+How is this regex going match these lines?
+
+The code I showed you doesn't do the Kleene star match.
+
+Let's go back to amatch
+--
+
+== !
+
+[source,pascal]
+----
+function amatch (var lin : string; i : integer;
+    var pat : string; j : integer) : integer;
+begin
+    while (pat[j] <> ENDSTR) and (i > 0) do
+        if (omatch(lin, i, pat, j)) then
+            j := j + patsize(pat, j)
+        else
+            i := 0
+    amatch := i
+end;
+----
+
+[NOTE.speaker]
+--
+Straightforward, right?
+
+Ok, brace yourselves
+--
+
+== !
+
+[source,pascal]
+----
+    while (not done) and (pat[j] <> ENDSTR) do
+        if (pat[j] = CLOSURE) then begin
+            j := j + patsize(pat, j);
+            i := offset
+            while (not done) amd (lin[i] <> ENDSTR) do
+                if (not omatch(lin, i, pat, j)) then
+                    done := true
+            done := false
+            while (not done) and (i >= offset) do begin
+                k := amatch(lin, i, pat, j+patsize(pat, j));
+                if (k > 0) then
+                    done := true
+                else
+                    i := i - 1
+            end;
+            offset := k
+            done := true
+        end
+    else if (not omatch(lin, offset, pat, j)) then begin
+        offset := 0
+        done := true
+    end
+    else
+        j := j + patsize(pat, j);
+    amatch := offset
+----
+
+[NOTE.speaker]
+--
+I had to trim the boilerplate off to get this to fit.
+
+Trying match as far as it can with the closure, then it tries to match the rest of the pattern (recurse into amatch).
+
+If that fails, it backs up one match, and then tries again. It keeps going until it matches (done:=true) or it's wound all the way back to zero length matches.
+
+Ouch, right?
+
+Now imagine trying to extend this for + (one or more), for alternatives (this|that). Just awful, right?
+--
+
+
+
+
