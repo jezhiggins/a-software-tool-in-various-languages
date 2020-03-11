@@ -2,9 +2,9 @@
 (if (nil? pattern-string)
   (do (println "Usage: find pattern") (. System exit -1)))
 
-(defn any-char [cand] true)
-(defn match-char? [cand, expected] (= cand expected))
-(defn end-of-line? [cand] (nil? cand))
+(defn any-char [cand, ] true)
+(defn match-char? [expect cand at-start] (= cand expected))
+(defn end-of-line? [cand, ] (nil? cand))
 
 (defn compile-pattern [patt]
   (loop [source patt result []]
@@ -21,11 +21,11 @@
 
 (def pattern (compile-pattern pattern-string))
 
-(defn match-line [line-seg]
+(defn match-line [line-seg at-start]
   (loop [tests pattern line line-seg]
     (let [c (first line) ctest (first tests)]
       (let [test (first ctest) advance (first (rest ctest))]
-        (if (test c)
+        (if (test c at-start)
           (let [remaining-tests (rest tests)]
             (if (empty? remaining-tests)
               true
@@ -33,13 +33,13 @@
           false)))))
 
 (defn matcher [whole-line]
-  (loop [line whole-line]
-    (if (match-line line)
+  (loop [line whole-line at-start]
+    (if (match-line line at-start)
       true
       (let [rest-of-line (rest line)]
         (if (empty? rest-of-line)
           false
-          (recur rest-of-line))))))
+          (recur rest-of-line false))))))
 
 (doseq [line (line-seq (java.io.BufferedReader. *in*))]
     (if (matcher line)
