@@ -1,0 +1,2 @@
+#!/bin/sh
+clojure brumjs_find.clj $*
