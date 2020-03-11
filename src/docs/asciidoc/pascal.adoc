@@ -264,6 +264,8 @@ If that fails, it backs up one match, and then tries again. It keeps going until
 
 Ouch, right?
 
+We've got lots of different bits of state to pass around (we could better variable names, admittedly), information about the operators is spread through my program - some in the parsing, some in the omatch function, some in pattern size - there's bits and pieces all over the place.
+
 Now imagine trying to extend this for + (one or more), for alternatives (this|that). Just awful, right?
 --
 
