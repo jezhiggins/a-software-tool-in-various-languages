@@ -1,13 +1,15 @@
 const readline = require('readline')
-const patternMatcher = require('./lib/patternMatcher')
+const compilePatternMatcher = require('./lib/patternMatcher')
 
 if (process.argv.length !== 3) {
     console.log("usage: find pattern")
     return -1
 }
 
+const patternString = process.argv[2]
+
 try {
-    const matcher = patternMatcher(process.argv[2])
+    const matcher = compilePatternMatcher(patternString)
 
     const rl = readline.createInterface({ input: process.stdin })
 
