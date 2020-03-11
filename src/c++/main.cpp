@@ -20,11 +20,11 @@ int main(int argc, const char* argv[]) {
 void do_main(int argc, const char* argv[]) {
     auto const pattern_string = get_pattern(argc, argv);
 
-    auto const matcher = make_pattern_matcher(pattern_string);
+    auto const pattern = make_pattern_matcher(pattern_string);
 
     while(std::cin) {
         auto const line = read_line(std::cin);
-        if (matcher.match(line))
+        if (pattern.match(line))
             std::cout << line << '\n';
     } // while
 }
