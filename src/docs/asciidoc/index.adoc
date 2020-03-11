@@ -11,6 +11,8 @@ include::pascal.adoc[]
 
 include::break.adoc[]
 
+include::cpp.adoc[]
+
 ++++
 <div id="talk-header" class="slide-header">
   <small class="slide-header-text">Brum.js March 2020, @jezhiggins</small>

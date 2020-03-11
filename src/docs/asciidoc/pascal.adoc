@@ -32,29 +32,22 @@ Anyway, looks ok right? Read the command line argument, convert into some kind o
 Pascal lacks, lacked anyway, any kind of higher order data structure. You've got values, and arrays, and that's it. When Kernighan and Plauger do is parse out the regex we provide on the command line into a series of tokens.
 --
 
-== !
-
-----
-%[^x]?[0-9]x$
-----
+== %[^X]?[0-9]X$
 
 [NOTE.speaker]
 --
 So this regex - start of line, not an x, something, digit, an x, eol - becomes a series of tokens
 --
 
-== !
+== %[^X]?[0-9]X$
 
-----
-%[^x]?[0-9]x$
+* BOL
+* NCCL 1 'X'
+* ANY
+* CCL 10 '0' '1' '2' '3' '4' '5' '6' '7' '8' '9'
+* LITCHAR 'X'
+* EOL
 
-BOL
-NCCL 1 'x'
-ANY
-CCL 10 '0' '1' '2' '3' '4' '5' '6' '7' '8' '9'
-LITCHAR 'x'
-EOL
-----
 
 [NOTE.speaker]
 --
@@ -181,11 +174,7 @@ Why is it a pain at the parsing stage?
 Why is it a pain at the execution stage?
 --
 
-== !
-
-----
-[0-9]*[0-9]$
-----
+== [0-9]*[0-9]$
 
 [NOTE.speaker]
 --
@@ -194,19 +183,13 @@ Consider this - I want to match lines which end with a number, a digit followed 
 The Kleene star is a pain because it applies to the construct before! This is awkward-ish at parse time, but manageable.
 --
 
-== !
+== [0-9]*[0-9]$
 
-----
-%[0-9]*[0-9]$
-----
+* 99999
 
-----
-99999
+* 555
 
-555
-
-0
-----
+* 0
 
 [NOTE.speaker]
 --
@@ -248,7 +231,7 @@ Ok, brace yourselves
         if (pat[j] = CLOSURE) then begin
             j := j + patsize(pat, j);
             i := offset
-            while (not done) amd (lin[i] <> ENDSTR) do
+            while (not done) and (lin[i] <> ENDSTR) do
                 if (not omatch(lin, i, pat, j)) then
                     done := true
             done := false

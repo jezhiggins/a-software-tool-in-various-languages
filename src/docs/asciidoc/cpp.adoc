@@ -1,0 +1,27 @@
+== !
+
+[source,cpp]
+----
+int main(int argc, const char* argv[]) {
+    auto const pattern_string = get_pattern(argc, argv);
+
+    auto const pattern = make_pattern_matcher(pattern_string);
+
+    while(std::cin) {
+        auto const line = read_line(std::cin);
+        if (pattern.match(line))
+            std::cout << line << '\n';
+    } // while
+}
+----
+
+[NOTE.speaker]
+--
+Now you might be thinking _that doesn't look like C++_, but it most assuredly does :)
+
+To get started we've got the same basic shape as the Pascal. Grab the command line argument, compile it into a pattern, if the pattern matches the line splat it back out.
+
+pattern.match <- here's our first real point of difference. Instead of a string, we've returned some kind of object.
+
+Based on this tiny snippet, would anyone like to have a stab at what's going on here? What does a pattern object look like, or what's going inside match?
+--

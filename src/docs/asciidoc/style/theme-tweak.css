@@ -1,5 +1,5 @@
 .reveal blockquote {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   width: auto;
 }
 
@@ -14,4 +14,6 @@
 
 .reveal pre code {
   max-height: unset;
+  padding: 2px;
+  line-height: 1.1em;
 }
