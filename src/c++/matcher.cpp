@@ -5,9 +5,27 @@
 #include "character_class.hpp"
 
 bool matcher::match(string_walker& line) const {
+    if (remainder_fn_)
+        return closure_match(line);
+    return one_match(line);
+}
+
+bool matcher::one_match(string_walker& line) const {
     auto ok = fn_(line);
-    if (ok) line.advance(advance_);
+    if (ok)
+      line.advance(advance_);
     return ok;
+}
+
+bool matcher::closure_match(string_walker& line) const {
+  line.snapshot();
+  while (one_match(line));
+  do {
+    if (remainder_fn_(line))
+      return true;
+  } while (line.rewind());
+
+  return false;
 }
 
 ///////////////////////////////

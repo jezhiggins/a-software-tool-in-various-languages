@@ -2,87 +2,52 @@
 #include "matcher.hpp"
 #include "string_walker.hpp"
 
-bool amatch(
-    string_walker line,
-    pattern_matcher::matcher_iterator from,
-    pattern_matcher::matcher_iterator end
-);
-
-bool closure_match(
-    string_walker& line,
-    pattern_matcher::matcher_iterator from,
-    pattern_matcher::matcher_iterator end
-);
+bool amatch(string_walker line, matcher_list const& matchers);
 
 ///////////////////////////////
-bool pattern_matcher::match(
-    std::string const& line
-) const {
-  auto matches = false;
-
-  auto walker = string_walker(line);
-
-  while (!walker.eol() && !matches) {
-      matches = amatch(
-          walker.clone(),
-          matchers_.begin(),
-          matchers_.end()
-      );
-      ++walker;
-  }
-
-  return matches;
-}
-
-bool amatch(
-    string_walker line,
-    pattern_matcher::matcher_iterator from,
-    pattern_matcher::matcher_iterator end
-) {
-    if (from == end)
-        return false;
-
-    for ( ; from != end; ++from) {
-        if (from->is_closure())
-            return closure_match(line, from, end);
-
-        if (!from->match(line))
-            return false;
-    }
-
-    return true;
-}
-
-bool closure_match(
-    string_walker& line,
-    pattern_matcher::matcher_iterator from,
-    pattern_matcher::matcher_iterator end
-) {
-  line.snapshot();
-  while (from->match(line));
-  do {
-      if (amatch(line.clone(), from + 1, end))
+bool pattern_matcher::match(std::string const& line) const {
+  for (auto walker = string_walker(line); !walker.eol(); ++walker)
+      if (amatch(walker.clone(), matchers_))
           return true;
-  } while (line.rewind());
 
   return false;
+}
+
+bool amatch(string_walker line, matcher_list const& matchers) {
+    if (matchers.empty())
+        return false;
+
+    for (auto const& matcher : matchers)
+        if (!matcher.match(line))
+            return false;
+
+    return true;
 }
 
 ///////////////////////////////
 auto const closure_char = '*';
 
-pattern_matcher make_pattern_matcher(std::string const& pattern) {
-    auto matchers = std::vector<matcher> { };
+matcher_list make_pattern_matcher(string_walker pattern) {
+    auto matchers = matcher_list { };
 
-    for (auto pw = string_walker { pattern, 0 }; !pw.eol(); ++pw) {
-        if (*pw == closure_char && !pw.bol()) {
-            matchers.back().make_closure();
-            continue;
+    for ( ; !pattern.eol(); ++pattern) {
+        if (*pattern == closure_char && !pattern.bol()) {
+            ++pattern;
+            auto remainder = make_pattern_matcher(pattern.clone());
+            auto remainder_fn = [remainder](string_walker const& line) { return amatch(line.clone(), remainder); };
+            matchers.back().make_closure(remainder_fn);
+            break;
         }
 
-        auto m = make_matcher(pw);
+        auto m = make_matcher(pattern);
         matchers.push_back(m);
     }
 
-    return pattern_matcher { matchers };
+    return matchers;
 }
+
+pattern_matcher make_pattern_matcher(std::string const& pattern) {
+  auto matchers = make_pattern_matcher(string_walker {pattern, 0});
+  return pattern_matcher { matchers };
+}
+

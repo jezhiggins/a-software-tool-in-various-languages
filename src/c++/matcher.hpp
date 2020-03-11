@@ -3,6 +3,7 @@
 
 #include <string>
 #include <functional>
+#include <vector>
 
 class string_walker;
 
@@ -12,19 +13,22 @@ public:
 
     matcher(match_fn fn, size_t advance) :
         fn_(fn),
-        advance_(advance),
-        closure_(false) {
+        advance_(advance) {
     }
 
     bool match(string_walker& line) const;
-    bool is_closure() const { return closure_; }
 
-    void make_closure() { closure_ = true; }
+    void make_closure(match_fn remainder_fn) {
+      remainder_fn_ = remainder_fn;
+    }
 
 private:
+    bool one_match(string_walker& line) const;
+    bool closure_match(string_walker& line) const;
+
     match_fn fn_;
+    match_fn remainder_fn_;
     size_t advance_;
-    bool closure_;
 };
 
 matcher make_matcher(string_walker& pattern_walker);

@@ -7,18 +7,18 @@
 
 class string_walker;
 
+typedef std::vector<matcher> matcher_list;
+
 class pattern_matcher {
 public:
-    explicit pattern_matcher(std::vector<matcher> const& matchers) :
+    explicit pattern_matcher(matcher_list const& matchers) :
         matchers_(matchers) {
     } // pattern_matcher
 
     bool match(std::string const& line) const;
 
-    typedef std::vector<matcher>::const_iterator matcher_iterator;
-
 private:
-    std::vector<matcher> matchers_;
+    matcher_list matchers_;
 };
 
 pattern_matcher make_pattern_matcher(std::string const& pattern);
