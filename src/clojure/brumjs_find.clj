@@ -2,24 +2,30 @@
 (defn match-char? [expected cand at-start] (= cand expected))
 (defn start-of-line? [cand at-start] at-start)
 (defn end-of-line? [cand at-start] (nil? cand))
+(def is-closure "CLOSURE")
 
-(defn compile-pattern [patt]
-  (loop [source patt result []]
+(defn compile-pattern
+  ([patt] (compile-pattern patt nil))
+  ([patt res] (loop [source patt result res]
     (let [result-char (first source) rest-source (rest source)]
-      (let [test-fn
-        (cond
-         (empty? source) nil
-         (= \? result-char) '(any-char 1)
-         (and (= \% result-char) (= source patt)) '(start-of-line? 0)
-         (and (= \$ result-char) (empty? rest-source)) '(end-of-line? 0)
-         :else [(partial match-char? result-char) 1])]
-        (if (nil? test-fn)
-          result
-          (recur rest-source (conj result test-fn)))))))
+      (if (and (= \* result-char) (not= source patt))
+        (let [prev-test (first result)]
+          (compile-pattern rest-source (conj (rest result) [is-closure prev-test])))
+        (let [test-fn
+          (cond
+           (empty? source) nil
+           (= \? result-char) '(any-char 1)
+           (and (= \% result-char) (= source patt)) '(start-of-line? 0)
+           (and (= \$ result-char) (empty? rest-source)) '(end-of-line? 0)
+           :else [(partial match-char? result-char) 1])]
+          (if (nil? test-fn)
+            (reverse result)
+            (recur rest-source (conj result test-fn)))))))))
 
-(defn match-line [pattern line-seg at-start]
+(defn match-line [pattern line-seg at-start] ;; omatch
   (loop [tests pattern line line-seg]
-    (let [c (first line) ctest (first tests)]
+    (let [ctest (first tests) c (first line)]
+      ;; closure in here
       (let [test (first ctest) advance (first (rest ctest))]
         (if (test c at-start)
           (let [remaining-tests (rest tests)]
@@ -28,7 +34,7 @@
               (recur (rest tests) (drop advance line))))
           false)))))
 
-(defn pattern-matches? [pattern whole-line]
+(defn pattern-matches? [pattern whole-line] ;; amatch
   (loop [line whole-line at-start true]
     (if (match-line pattern line at-start)
       true
