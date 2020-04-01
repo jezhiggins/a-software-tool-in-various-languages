@@ -1,0 +1,40 @@
+= A Software Tool In Several Languages
+Jez Higgins
+{docdate}
+
+_Reimplementing one program from Kernighan and Plauger's *Software Tools in Pascal*_
+
+One of my very favourite technical books is _Software Tools in Pascal_.footnote:[Indeed, I said the same thing back in CVu Volume 20 Issue 2] Written by Brian Kernighan and Bill Plauger, it was first publishing 1981 and remains in print.
+
+You will be, I assume, at least passingly familiar with Kernighan and Plauger. Both were members of staff at Bell Labs, the home of Unix and consequently of so much of the modern computing landscape, Plauger in the early 70s, Kernighan for a pretty considerable period beyond that.
+
+Kernighan was directly involved in Unix development, indeed coined the name Unix, and contributed a number of what we now consider _standard Unix_ programs particularly around typesetting. He is the K of K&R C and also of AWK. He's an amazingly good technical communicator, both as a writer and speaker.footnote:[There's a Kernighan playlist on the Computerphile Youtube channel, and I absolutely recommend it to you.]
+
+I don't think Bill Plauger was directly involved in Unix but he and Kernighan had adjacent offices for a time. When this book was written Plauger had left Bell Labs and founded Whitesmiths, which was the first company to offer a commercial C compiler. Plauger was subsequently involved in both C and {cpp} standardisation, implemented the C and the {cpp} standard libraries, wrote for and was editor of C Users Journal for years.
+
+Between them, they've written a number of books, I'd recommend them pretty universally - Plauger's _Programming on Purpose in particular_, and Kernighan and Pike's _The Unix Programming Environment_ and their _Practice of Programming_. Anyway, _this_ book, Software Tools in Pascal sets out its stall in the very first line of the Preface.
+
+[quote]
+--
+This book teaches how to write good programs that make good tools, by presenting a comprehensive set, each of which provides lessons in design and implementation.
+--
+
+The computing landscape in 1981 was, you won't be surprised to know, rather different to today. The home computer revolution was only just beginning, and those machines were a tiny, trivial, world of their own. Even in the commercial and academic arena, where I suspect most of us spend our time today, computing was a very different beast.
+
+When this book was published there were, according to an internal memo, "approximately 800 Unix systems in use outside Bell Labs, with more expected!". The Unix model of computing, of small programs communicating, using text as a common interchange format, simply wasn't that widely known.
+
+_Software Tools in Pascal_ is both a book about programming, without being a book that teaches you how to program, and a book about the Unix philosophy, without being a book that's explicitly about Unix.
+
+The Preface continues
+
+[quote]
+--
+The principles of good programming are presented not as abstract sermons but as concrete lessons in the context of working programs. For example, there is no chapter on "efficiency". Instead, throughout the book there are observations on efficiency as it relates to the particular program being developed. Similarly there is no chapter on "top-down design," nor on "structured programming," nor on "testing and debugging." Instead, all of these disciplines are employed as appropriate in every program shown.
+--
+
+The modus operandi of the book is, therefore, to present complete programs, and through the discussion of the program development and implementation to illuminate these various aspects of programming as a discipline.
+
+The first chapter, Getting Started, doesn't quite start with Hello World footnote:[A program almost certainly first written by Brian Kernighan], but it may as well do. It starts with a tiny program to copy the standard input to the standard output, and builds from there. Subsequent chapters present progressively more complex programs, including a tar-like file archiver, a grep looky-likey, an ed-style line editor, a typesetter, and a macro processor. All the tools you need, in fact, to write and typeset a book.footnote:[Brian Kernighan typesets all his own books, see https://www.jezuk.co.uk/blog/2019/10/typesettings-with-brian-kernighan.html ]
+
+When I first read Software Tools in Pascal, I’d just started my first substantial job on a Unix system (in fact four Unix systems, all slightly different) and I was only passingly familiar with a handful of command line tools. The idea that these small programs did simple things, but when combined like some kind of giant tokusatsu robot could do very powerful things was really quite startling.
+

@@ -1,6 +1,7 @@
 plugins {
   id 'org.asciidoctor.jvm.gems' version '3.1.0'
   id 'org.asciidoctor.jvm.revealjs' version '3.1.0'
+  id 'org.asciidoctor.jvm.pdf' version '3.1.0'
 }
 
 repositories {
@@ -37,24 +38,14 @@ asciidoctorRevealJs {
       into 'style'
     }
   }
+}
 
-/*
- attributes 'build-gradle': file('build.gradle'),
-            'endpoint-url': 'http://example.org',
-            'source-highlighter': 'coderay',
-            'coderay-css': 'style',
-            'imagesdir': './images',
-            'toc': 'left',
-            'icons': 'font',
-            'setanchors': '',
-            'idprefix': 'slide-',
-            'idseparator': '-',
-            'docinfo': 'shared',
-            'revealjs_theme': 'black',
-            'revealjs_transition': 'linear',
-            'revealjs_history': 'true',
-            'revealjs_slideNumber': 'true'
-*/
+asciidoctorPdf {
+  sources {
+    include "article.adoc"
+  }
+
+  baseDirFollowsSourceDir()
 }
 
 defaultTasks 'asciidoctorRevealJs'
