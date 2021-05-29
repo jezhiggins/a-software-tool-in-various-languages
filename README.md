@@ -1,4 +1,4 @@
-Forthcoming presentation to Brum-JS in March 2020
+Intended to be and now abandoned presentation to Brum-JS, originally scheduled for March 2020
 
 # A Software Tool in Many Languages
 
